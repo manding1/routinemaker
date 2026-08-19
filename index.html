@@ -1349,17 +1349,21 @@
     );
   }
 
+  function renderWelcomeScreen(){
+    return (
+      '<div class="empty-screen">' +
+        '<img class="mascot-hero" src="' + MASCOT_HERO_SRC + '" alt="또롱이" />' +
+        '<h1 class="title">오늘의 젤리를 모아볼까요?</h1>' +
+        '<p class="body empty-subtext">작은 일을 하나씩 해봐요.</p>' +
+        '<button type="button" class="btn-primary" data-action="open-new-cluster">시작하기</button>' +
+        '<button type="button" class="link-btn" data-action="open-new-routine">이미 하고 있는 루틴이 있나요? 바로 추가하기</button>' +
+      "</div>"
+    );
+  }
+
   function renderHome(){
     if (appState.clusters.length === 0){
-      return (
-        '<div class="empty-screen">' +
-          '<img class="mascot-hero" src="' + MASCOT_HERO_SRC + '" alt="또롱이" />' +
-          '<h1 class="title">오늘의 젤리를 모아볼까요?</h1>' +
-          '<p class="body empty-subtext">작은 일을 하나씩 해봐요.</p>' +
-          '<button type="button" class="btn-primary" data-action="open-new-cluster">시작하기</button>' +
-          '<button type="button" class="link-btn" data-action="open-new-routine">이미 하고 있는 루틴이 있나요? 바로 추가하기</button>' +
-        "</div>"
-      );
+      return renderWelcomeScreen();
     }
 
     var today = todayStr();
@@ -1371,7 +1375,7 @@
 
     var html = "";
     html += '<div class="home-header">' +
-      '<button type="button" class="home-title-group" data-action="back-home" aria-label="홈으로">' +
+      '<button type="button" class="home-title-group" data-action="open-welcome" aria-label="또롱이 화면으로">' +
         '<h1 class="title">Routine Maker</h1>' +
       "</button>" +
       '<div class="header-actions">' +
@@ -1475,6 +1479,7 @@
     if (ui.view === "review") app.innerHTML = renderReview();
     else if (ui.view === "pastList") app.innerHTML = renderPastList();
     else if (ui.view === "pastDetail") app.innerHTML = renderPastDetail();
+    else if (ui.view === "welcome") app.innerHTML = renderWelcomeScreen();
     else app.innerHTML = renderHome();
     attachDynamicListeners();
   }
@@ -1551,6 +1556,7 @@
     if (!name) return;
     createCluster(name);
     closeModal();
+    ui.view = "home";
     render();
   }
 
@@ -1582,6 +1588,7 @@
     if (!name) return;
     createRoutine(name);
     closeModal();
+    ui.view = "home";
     render();
   }
 
@@ -1861,6 +1868,7 @@
       case "open-past-reviews": ui.view = "pastList"; render(); break;
       case "open-review": ui.view = "review"; render(); break;
       case "back-home": ui.view = "home"; render(); break;
+      case "open-welcome": ui.view = "welcome"; render(); break;
       case "fill-grape": attemptFillGrape(id); break;
       case "view-grape-date": viewGrapeDate(id, act.dataset.index); break;
       case "cancel-complete": cancelTodayComplete(id); break;
