@@ -1196,7 +1196,7 @@
       );
     }
     return (
-      '<div class="checklist-row">' +
+      '<div class="checklist-row' + (doneToday ? " checklist-row-checked" : "") + '">' +
         '<span class="body checklist-name">' + esc(step.text) + "</span>" +
         '<button type="button" class="step-toggle' + (doneToday ? " step-toggle-on" : "") +
           '" data-action="toggle-step-done" data-id="' + step.id + '" aria-pressed="' + (doneToday ? "true" : "false") +
