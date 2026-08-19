@@ -58,12 +58,12 @@
     --radius-pill:9999px;
   }
   *, *::before, *::after{ box-sizing:border-box; }
-  html, body{ height:100%; }
+  html, body{ height:100%; width:100%; overflow-x:hidden; }
+  html{ background:var(--canvas-soft); }
   body{
     margin:0;
     background:var(--canvas-soft);
     -webkit-tap-highlight-color:transparent;
-    overflow-x:hidden;
   }
   button, input, textarea{
     font:inherit;
