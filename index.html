@@ -927,9 +927,10 @@
       return;
     }
 
-    // Every queued 작은 행동 already checked today — that already answers the
-    // confirm modal's question, so skip straight to the same effect as [Yes].
-    if (c.pendingSteps.length > 0 && c.pendingSteps.every(function(s){ return s.doneDate === today; })){
+    // No queued 작은 행동 at all, or every queued one is already checked today —
+    // either way there's nothing left to ask about, so skip straight to the same
+    // effect as [Yes].
+    if (c.pendingSteps.length === 0 || c.pendingSteps.every(function(s){ return s.doneDate === today; })){
       confirmCompleteCluster(id);
       return;
     }
