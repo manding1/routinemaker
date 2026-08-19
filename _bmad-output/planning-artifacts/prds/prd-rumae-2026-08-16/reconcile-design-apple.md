@@ -1,0 +1,31 @@
+# Reconciliation: DESIGN-apple.md vs. PRD (prd-rumae-2026-08-16)
+
+Input reconciliation check for the PRD finalize step. Read `DESIGN-apple.md` in full against `prd.md` and `addendum.md`. Per the PRD's own §0 scope statement, DESIGN-apple.md's specific token values are *not* expected to appear as PRD content — this check verifies (1) acknowledgment, (2) product-scope leakage, (3) the already-flagged style tension.
+
+## Acknowledgment Check
+
+**Result: PASS.** PRD §0 (Document Purpose) explicitly names `DESIGN-apple.md` and correctly labels it "디자인 토큰" (design tokens) — i.e., a visual-spec source, not a functional-requirements source. It then explicitly states that visual/interaction-level detail (citing the grape sticker-book mockup as the example) lives in `addendum.md` and is deferred to the downstream UX spec stage. This is the correct scoping: DESIGN-apple.md is acknowledged as an input, its content is correctly excluded from the FR/NFR body, and there's an explicit handoff pointer (addendum.md → UX spec) so the source isn't silently dropped.
+
+One minor wording nuance, not a defect: §0 says the PRD "통합한" (integrates/synthesizes) handoff-prompt_1.md, DESIGN-apple.md, and the discovery structural changes into one document. Taken literally, "integrates" could suggest DESIGN-apple.md's content was folded into the PRD; in practice no token values appear anywhere in the PRD body, which is correct per the same §0's next sentence. Read in context (the very next sentence clarifies the visual/interaction split), this is fine — the "integration" is at the level of discovery decisions, not literal content merge. Worth being aware of if §0 is ever tightened, but not something that needs a rewrite now.
+
+## Product-Scope Gaps
+
+**Result: None found that rise to FR/NFR/Non-Goal level.** DESIGN-apple.md is a visual/component token spec reverse-engineered from Apple's *marketing/e-commerce* web presence (product tiles, buy-page configurator, global nav with search/bag, multi-column footer). Scanned specifically for interaction patterns, accessibility constraints, and platform assumptions that would count as product-scope rather than styling — found none that MANDING's PRD is missing:
+
+- **Interaction patterns** (`transform: scale(0.95)` press state, no-hover-documented convention, backdrop-blur sticky bars) are pure UI micro-interaction/visual polish — correctly downstream-UX-spec material, not FR-level.
+- **Accessibility constraints** (44×44px minimum touch target, 2px focus-ring outline) are present in DESIGN-apple.md but are visual/interaction-level per the PRD's own scope carve-out, same as color/type tokens. The PRD doesn't currently have any NFR or Non-Goal about accessibility — that's a consistent omission, not one specifically induced by DESIGN-apple.md, and it's consistent with the PRD's stated scope boundary (§0) rather than a leak.
+- **Platform assumptions**: DESIGN-apple.md is built around a full responsive breakpoint ladder (phone → tablet → desktop → wide desktop) and CDN-served, lazy-loaded imagery — infrastructure MANDING explicitly cannot use (MVP scope: single HTML file, local storage, no server). This is a real mismatch between the *source document's* assumed delivery model and MANDING's, but it doesn't need a new FR/Non-Goal: MANDING's MVP scope already states "단일 HTML 파일로 동작... 서버/로그인 없음," which implicitly forecloses CDN/network-dependent asset loading. No gap in the PRD; DESIGN-apple.md's infra assumptions simply don't transfer, and nothing in DESIGN-apple.md asserts a *product requirement* that conflicts with this — it's descriptive of Apple.com, not prescriptive for MANDING.
+
+Net: DESIGN-apple.md's component vocabulary (product configurator, buy-page floating bar, footer link columns, global nav search/bag) has essentially no surface-area overlap with MANDING's actual feature set (grape board, routine checklist, daily review). That's expected — it's a tokens/aesthetic reference, not a UI-pattern donor for this app — and nothing product-relevant is being missed by keeping it out of the FR/NFR body.
+
+## Style Tension Assessment
+
+**Result: The tension flagged in addendum.md is accurate, and if anything slightly understated.**
+
+Confirmed from the color tokens: DESIGN-apple.md is strictly neutral-plus-single-accent — canvas white (`#ffffff`), parchment off-white (`#f5f5f7`), near-black ink/tiles (`#1d1d1f`, `#272729`–`#252527`), true black (`#000000`), and exactly one interactive hue, Action Blue (`#0066cc`, with `#0071e3`/`#2997ff` siblings for focus/dark-surface variants). There is no warm tone anywhere in the palette, and the Do's/Don'ts section makes the single-accent constraint explicit and non-negotiable: *"Don't introduce a second accent color... No second brand color exists."* This matches addendum.md's "cool Apple-style tokens" characterization precisely.
+
+The grape-cluster mockup (per addendum.md) needs a warm cream/off-white background, tan/cream badge, purple/lavender filled circles with darker purple outline, and a green leaf icon — i.e., at minimum three non-neutral hues (purple, tan, green) plus a warm-toned neutral background.
+
+So the conflict isn't just "warm background vs. cool background" as the addendum's phrasing might read at a glance — it's structural: DESIGN-apple.md's system architecturally forbids a multi-hue palette (one accent color, period), while the grape mockup's core visual identity *requires* a multi-hue palette (purple + green + tan against a warm neutral) to read as a sticker-book. Reconciling this later isn't just "pick warm vs. cool neutrals" — it's "single-accent minimalism" vs. "multi-color illustrative/gamified" as two different design philosophies, which is a bigger reconciliation question than the addendum's wording suggests. This reinforces (doesn't overturn) the addendum's decision to defer the reconciliation to the UX/architecture phase — if anything it argues that phase should treat this as a first-order decision (which language wins, or where the seam between them sits) rather than a minor palette tweak.
+
+No evidence was found that the tension is overstated — DESIGN-apple.md contains no warm tones, no secondary accents, and no component analogous to a gamified progress/sticker board that could serve as a natural bridge between the two aesthetics.
