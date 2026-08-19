@@ -1753,10 +1753,6 @@
           '<p class="body">했다면 아래 버튼을 눌러주세요.</p>' +
           '<div class="modal-checkbox-group">' +
             '<label class="modal-checkbox-row">' +
-              '<input type="checkbox" id="skip-confirm-day">' +
-              '<span class="body">하루 동안 보지 않기</span>' +
-            "</label>" +
-            '<label class="modal-checkbox-row">' +
               '<input type="checkbox" id="skip-confirm-week">' +
               '<span class="body">일주일 간 보지 않기</span>' +
             "</label>" +
@@ -1767,25 +1763,13 @@
           "</div>" +
         "</div>" +
       "</div>";
-    var dayCheckbox = document.getElementById("skip-confirm-day");
-    var weekCheckbox = document.getElementById("skip-confirm-week");
-    dayCheckbox.addEventListener("change", function(){
-      if (dayCheckbox.checked) weekCheckbox.checked = false;
-    });
-    weekCheckbox.addEventListener("change", function(){
-      if (weekCheckbox.checked) dayCheckbox.checked = false;
-    });
   }
 
   function confirmComplete(){
     if (!modalContext || modalContext.type !== "completeConfirm") return;
     var id = modalContext.clusterId;
-    var dayCheckbox = document.getElementById("skip-confirm-day");
     var weekCheckbox = document.getElementById("skip-confirm-week");
-    if (dayCheckbox && dayCheckbox.checked){
-      appState.skipConfirmUntil = addDays(todayStr(), 1);
-      saveState();
-    } else if (weekCheckbox && weekCheckbox.checked){
+    if (weekCheckbox && weekCheckbox.checked){
       appState.skipConfirmUntil = addDays(todayStr(), 7);
       saveState();
     }
