@@ -68,11 +68,13 @@
   button, input, textarea{
     font:inherit;
     color:inherit;
+    outline-offset:2px;
+  }
+  button, input:not([type="checkbox"]), textarea{
     background:none;
     border:none;
     -webkit-appearance:none;
     appearance:none;
-    outline-offset:2px;
   }
   button{ cursor:pointer; }
 
