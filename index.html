@@ -1351,13 +1351,16 @@
   }
 
   function renderWelcomeScreen(){
+    var hasClusters = appState.clusters.length > 0;
+    var primaryAction = hasClusters ? "back-home" : "open-new-cluster";
+    var primaryLabel = hasClusters ? "젤리밭으로 돌아가기" : "시작하기";
     return (
       '<div class="empty-screen">' +
         '<img class="mascot-hero" src="' + MASCOT_HERO_SRC + '" alt="또롱이" />' +
         '<h1 class="title">오늘의 젤리를 모아볼까요?</h1>' +
         '<p class="body empty-subtext">작은 일을 하나씩 해봐요.</p>' +
-        '<button type="button" class="btn-primary" data-action="open-new-cluster">시작하기</button>' +
-        '<button type="button" class="link-btn" data-action="open-new-routine">이미 하고 있는 루틴이 있나요? 바로 추가하기</button>' +
+        '<button type="button" class="btn-primary" data-action="' + primaryAction + '">' + primaryLabel + '</button>' +
+        (hasClusters ? "" : '<button type="button" class="link-btn" data-action="open-new-routine">이미 하고 있는 루틴이 있나요? 바로 추가하기</button>') +
       "</div>"
     );
   }
